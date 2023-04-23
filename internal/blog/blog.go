@@ -3,10 +3,12 @@ package blog
 import (
 	"context"
 
+	"github.com/google/uuid"
 	log "github.com/sirupsen/logrus"
 )
 
 type Article struct {
+	ID     string `json:"id"`
 	Title  string `json:"title"`
 	Slug   string `json:"slug"`
 	Body   string `json:"body"`
@@ -31,7 +33,10 @@ func NewBlogService(svc BlogAPI) *BlogService {
 func (bs *BlogService) CreatePost(ctx context.Context, a Article) (Article, error) {
 	log.WithFields(log.Fields{
 		"blog": "create article",
-	}).Info("internal blog")
+	}).Info("blog internal")
+
+	id := uuid.NewString()
+	a.ID = id
 
 	article, err := bs.Store.CreatePost(ctx, a)
 	if err != nil {
@@ -45,7 +50,7 @@ func (bs *BlogService) GetPost(ctx context.Context, id string) (Article, error) 
 
 	log.WithFields(log.Fields{
 		"blog": "get blog",
-	}).Info("internal blog")
+	}).Info("blog internal")
 
 	article, err := bs.Store.GetPost(ctx, id)
 	if err != nil {

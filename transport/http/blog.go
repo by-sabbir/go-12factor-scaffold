@@ -1,23 +1,41 @@
 package http
 
 import (
+	"net/http"
+
 	"github.com/by-sabbir/go-12factor-scaffold/internal/blog"
 	"github.com/gin-gonic/gin"
-	log "github.com/sirupsen/logrus"
+	"github.com/gosimple/slug"
 )
 
 func (h *Handler) CreatePost(c *gin.Context) {
-	log.Info("create post api called")
-	h.Service.CreatePost(c.Request.Context(), blog.Article{})
-	c.JSON(201, gin.H{
-		"api": "/api/v1/article/create",
-	})
+
+	var blogStruct blog.Article
+	if err := c.BindJSON(&blogStruct); err != nil {
+		c.JSON(http.StatusInternalServerError, &gin.H{
+			"error": err,
+		})
+	}
+	slugTitle := slug.Make(blogStruct.Title)
+	blogStruct.Slug = slugTitle
+	postedArticle, err := h.Service.CreatePost(c.Request.Context(), blogStruct)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, &gin.H{
+			"error": err,
+		})
+		return
+	}
+	c.JSON(http.StatusCreated, postedArticle)
 }
 
 func (h *Handler) GetPost(c *gin.Context) {
-	log.Info("create post api called")
-	h.Service.GetPost(c.Request.Context(), "article_id")
-	c.JSON(200, gin.H{
-		"api": "/api/v1/article/get",
-	})
+	id := c.Params.ByName("article_id")
+	article, err := h.Service.GetPost(c.Request.Context(), id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, &gin.H{
+			"error": err,
+		})
+		return
+	}
+	c.JSON(http.StatusOK, article)
 }

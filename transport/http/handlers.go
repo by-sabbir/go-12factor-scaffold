@@ -57,5 +57,5 @@ func (h *Handler) mapRoute() {
 	rg := h.Router.Group("/api/v1")
 
 	rg.POST("/article", h.CreatePost)
-	rg.GET("/article", h.GetPost)
+	rg.GET("/article/:article_id", h.GetPost)
 }
