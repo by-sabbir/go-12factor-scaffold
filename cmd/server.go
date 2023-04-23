@@ -5,9 +5,11 @@ package cmd
 
 import (
 	"fmt"
-	"net/http"
 	"os"
 
+	"github.com/by-sabbir/go-12factor-scaffold/db"
+	"github.com/by-sabbir/go-12factor-scaffold/internal/blog"
+	transportHttp "github.com/by-sabbir/go-12factor-scaffold/transport/http"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -33,7 +35,16 @@ func init() {
 }
 
 func Run() error {
-	srvAddr := fmt.Sprintf("%s:%s", viper.GetString("host"), viper.GetString("port"))
+	db, err := db.NewDatabase()
+	if err != nil {
+		log.Error("cloud not connect to db: ", err)
+	}
+	svc := blog.NewBlogService(db)
+	srv := transportHttp.NewHandler(svc)
 
-	return http.ListenAndServe(srvAddr, nil)
+	if err := srv.Serve(); err != nil {
+		log.Error("could not serve: ", err)
+		return err
+	}
+	return nil
 }
