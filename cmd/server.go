@@ -4,7 +4,6 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/by-sabbir/go-12factor-scaffold/db"
@@ -12,7 +11,6 @@ import (
 	transportHttp "github.com/by-sabbir/go-12factor-scaffold/transport/http"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 // serverCmd represents the server command
@@ -21,8 +19,7 @@ var serverCmd = &cobra.Command{
 	Short: "runs the server",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("server called")
-		fmt.Println("viper: ", viper.Get("port"))
+
 		if err := Run(); err != nil {
 			log.Println("[error] could not run server: ", err)
 			os.Exit(1)

@@ -4,8 +4,6 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/by-sabbir/go-12factor-scaffold/db"
 
 	log "github.com/sirupsen/logrus"
@@ -16,10 +14,6 @@ import (
 var migrateCmd = &cobra.Command{
 	Use:   "migrate",
 	Short: "Migrate Database",
-
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("migrate called")
-	},
 }
 
 var upCmd = &cobra.Command{

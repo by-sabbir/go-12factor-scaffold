@@ -53,5 +53,4 @@ func initConfig() {
 		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
 	}
 
-	fmt.Println("viper conf: ", viper.GetString("host"))
 }

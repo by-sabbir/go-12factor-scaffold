@@ -3,8 +3,8 @@ version: "3.8"
 services:
   db:
     image: postgres:14
-    ports:
-      - 5432:5432
+    expose:
+      - 5432
     environment:
       - POSTGRES_DB=twfactor
       - POSTGRES_USER=postgres
@@ -12,9 +12,16 @@ services:
     volumes:
       - dbdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
+      test: [CMD-SHELL, pg_isready]
       interval: 10s
       timeout: 5s
       retries: 5
+
+  app:
+    build: .
+    ports:
+      - 9091:9091
+    volumes:
+      - ./config.yaml:/app/config.yaml
 volumes:
-  dbdata:
+  dbdata: {}
