@@ -1,4 +1,4 @@
-module test/12factor
+module github.com/by-sabbir/go-12factor-scaffold
 
 go 1.20
 

@@ -5,7 +5,8 @@ package cmd
 
 import (
 	"fmt"
-	"test/12factor/db"
+
+	"github.com/by-sabbir/go-12factor-scaffold/db"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"

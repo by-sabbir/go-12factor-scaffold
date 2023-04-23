@@ -1,10 +1,9 @@
 /*
 Copyright © 2023 Sabbir Ahmed<me@sabbir.dev>
-
 */
 package main
 
-import "test/12factor/cmd"
+import "github.com/by-sabbir/go-12factor-scaffold/cmd"
 
 func main() {
 	cmd.Execute()
