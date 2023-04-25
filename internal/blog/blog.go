@@ -5,15 +5,8 @@ import (
 
 	"github.com/google/uuid"
 	log "github.com/sirupsen/logrus"
+	"github.com/streadway/amqp"
 )
-
-type Article struct {
-	ID     string `json:"id"`
-	Title  string `json:"title"`
-	Slug   string `json:"slug"`
-	Body   string `json:"body"`
-	Author string `json:"author"`
-}
 
 type BlogAPI interface {
 	CreatePost(context.Context, Article) (Article, error)
@@ -21,12 +14,18 @@ type BlogAPI interface {
 }
 
 type BlogService struct {
-	Store BlogAPI
+	Store     BlogAPI
+	Publisher *amqp.Channel
 }
 
 func NewBlogService(svc BlogAPI) *BlogService {
+	pubCh, err := NewAMQP()
+	if err != nil {
+		log.Fatal("cloud not initiate amqp: ", err)
+	}
 	return &BlogService{
-		Store: svc,
+		Store:     svc,
+		Publisher: pubCh,
 	}
 }
 
@@ -42,6 +41,12 @@ func (bs *BlogService) CreatePost(ctx context.Context, a Article) (Article, erro
 	if err != nil {
 		log.Error("could not create article")
 	}
+
+	errCh := make(chan error)
+	go func(chan error) {
+		e := a.Publish(bs.Publisher)
+		<-e
+	}(errCh)
 
 	return article, err
 }
