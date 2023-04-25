@@ -23,7 +23,7 @@ var upCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		db, err := db.NewDatabase()
 		if err != nil {
-			log.Error("Could not connect to db: ", err)
+			log.Error(": ", err)
 		}
 		if err := db.MigrateDB(); err != nil {
 			log.Error("could not migrate db: ", err)

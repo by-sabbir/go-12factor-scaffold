@@ -3,8 +3,8 @@ version: "3.8"
 services:
   db:
     image: postgres:14
-    expose:
-      - 5432
+    ports:
+      - 5432:5432
     environment:
       - POSTGRES_DB=twfactor
       - POSTGRES_USER=postgres
@@ -16,11 +16,22 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    ports:
+        - 5672:5672
+        - 15672:15672
+    volumes:
+        - ./rabbitmq/data/:/var/lib/rabbitmq/
+    environment:
+        - RABBITMQ_DEFAULT_USER=admin
+        - RABBITMQ_DEFAULT_PASS=passowrd101
 
   app:
     build: .
     ports:
       - 9091:9091
+    # command: command
     volumes:
       - ./config.yaml:/app/config.yaml
 volumes:

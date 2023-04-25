@@ -1,3 +1,4 @@
 host: 0.0.0.0
 port: 9091
-dsl: host=db port=5432 user=postgres dbname=twfactor password=Password@1 sslmode=disable
+db_dsn: host=db port=5432 user=postgres dbname=twfactor password=Password@1 sslmode=disable
+rmq_dsn: amqp://admin:passowrd101@rabbitmq:5672/

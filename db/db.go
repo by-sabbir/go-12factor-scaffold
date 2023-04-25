@@ -13,7 +13,7 @@ type DataBase struct {
 }
 
 func NewDatabase() (*DataBase, error) {
-	connecttionString := viper.GetString("DSL")
+	connecttionString := viper.GetString("db_dsn")
 
 	dbConn, err := sqlx.Connect("postgres", connecttionString)
 
