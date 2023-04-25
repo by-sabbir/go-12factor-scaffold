@@ -12,4 +12,4 @@ WORKDIR /app
 
 COPY --from=build /app/srv .
 COPY --from=build /app/migrations /app/migrations/
-CMD [ "./srv", "server"]
+# CMD [ "./srv", "server"]

@@ -4,6 +4,9 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
 	"github.com/by-sabbir/go-12factor-scaffold/internal/blog"
@@ -43,19 +46,39 @@ func NewHandler(svc BlogAPI) *Handler {
 }
 
 func (h *Handler) Serve() error {
-	err := h.Server.ListenAndServe()
+	go func() {
+		// service connections
+		if err := h.Server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("listen: %s\n", err)
+		}
+	}()
 
-	if err != nil {
-		log.Error("could not start server: ", err)
+	// Wait for interrupt signal to gracefully shutdown the server with
+	// a timeout of 5 seconds.
+	quit := make(chan os.Signal, 1)
+	// kill (no param) default send syscanll.SIGTERM
+	// kill -2 is syscall.SIGINT
+	// kill -9 is syscall. SIGKILL but can"t be catch, so don't need add it
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+	log.Println("Shutdown Server ...")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err := h.Server.Shutdown(ctx); err != nil {
+		log.Fatal("Server Shutdown:", err)
 		return err
 	}
 
+	<-ctx.Done()
+	log.Println("Server exiting")
 	return nil
 }
 
 func (h *Handler) mapRoute() {
-	rg := h.Router.Group("/api/v1")
+	h.Router.GET("/healthz", h.Ping)
 
+	rg := h.Router.Group("/api/v1")
 	rg.POST("/article", h.CreatePost)
 	rg.GET("/article/:article_id", h.GetPost)
 }

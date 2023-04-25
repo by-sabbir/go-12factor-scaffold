@@ -6,6 +6,7 @@ import (
 	"github.com/by-sabbir/go-12factor-scaffold/internal/blog"
 	"github.com/gin-gonic/gin"
 	"github.com/gosimple/slug"
+	log "github.com/sirupsen/logrus"
 )
 
 func (h *Handler) CreatePost(c *gin.Context) {
@@ -38,4 +39,12 @@ func (h *Handler) GetPost(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, article)
+}
+
+func (h *Handler) Ping(c *gin.Context) {
+	_, err := c.Writer.Write([]byte(c.RemoteIP()))
+	if err != nil {
+		log.Println(err)
+	}
+	c.AbortWithStatus(http.StatusOK)
 }

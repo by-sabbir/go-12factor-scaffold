@@ -31,7 +31,7 @@ services:
     build: .
     ports:
       - 9091:9091
-    # command: command
+    command: ./srv server --config /app/config.yaml
     volumes:
       - ./config.yaml:/app/config.yaml
 volumes:
