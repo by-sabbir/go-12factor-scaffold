@@ -12,6 +12,7 @@ type EventBus struct {
 
 func NewAMQP() (*amqp.Channel, error) {
 	dsn := viper.GetString("rmq_dsn")
+	log.Info("amqp: ", dsn)
 	conn, err := amqp.Dial(dsn)
 	if err != nil {
 		log.Error("could not connect to the dsl")
