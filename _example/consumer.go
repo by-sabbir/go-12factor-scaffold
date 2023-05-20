@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	conn, err := amqp.Dial("amqp://admin:passowrd101@localhost:5672/")
+	conn, err := amqp.Dial("amqp://admin:sup3rs3cr27@localhost:5672/")
 	if err != nil {
 		panic(err)
 	}

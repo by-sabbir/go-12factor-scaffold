@@ -8,7 +8,7 @@ services:
     environment:
       - POSTGRES_DB=twfactor
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=Password@1
+      - POSTGRES_PASSWORD=sup3rs3cr27
     volumes:
       - dbdata:/var/lib/postgresql/data
     healthcheck:
@@ -25,7 +25,7 @@ services:
         - ./rabbitmq/data/:/var/lib/rabbitmq/
     environment:
         - RABBITMQ_DEFAULT_USER=admin
-        - RABBITMQ_DEFAULT_PASS=passowrd101
+        - RABBITMQ_DEFAULT_PASS=sup3rs3cr27
 
   app:
     build: .
@@ -33,6 +33,6 @@ services:
       - 9091:9091
     command: ./srv server --config /app/config.yaml
     volumes:
-      - ./config.yaml:/app/config.yaml
+      - ./dev.yaml:/app/config.yaml
 volumes:
   dbdata: {}

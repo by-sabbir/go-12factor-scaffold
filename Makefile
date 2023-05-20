@@ -1,7 +1,13 @@
 .PHONY:
 
 build:
-	go build -o app main.go
+	docker compose build
 
 run:
-	./app server --config ./config.yaml
+	docker compose up -d
+
+migrate:
+	docker compose exec app sh -c "./srv migrate up"
+
+test:
+	go test -cover ./...
