@@ -22,18 +22,12 @@ func (a *Article) Publish(ch *amqp.Channel) (errCh chan error) {
 		errCh <- err
 	}
 
-	q, err := ch.QueueDeclare("blog", true, false, false, false, nil)
-	if err != nil {
-		log.Error("could not declare queue: ", err)
-		errCh <- err
-	}
-
 	var event amqp.Publishing
 
 	event.ContentType = "application/json"
 	event.Body = msg
 
-	if err := ch.Publish("", q.Name, false, false, event); err != nil {
+	if err := ch.Publish("", "blog", false, false, event); err != nil {
 		log.Error("could not publish msg: ", err)
 		errCh <- err
 	}

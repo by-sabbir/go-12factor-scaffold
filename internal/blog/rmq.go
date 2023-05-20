@@ -23,6 +23,12 @@ func NewAMQP() (*amqp.Channel, error) {
 		return &amqp.Channel{}, err
 	}
 
+	_, err = ch.QueueDeclare("blog", true, false, false, false, nil)
+	if err != nil {
+		log.Error("could not declare queue: ", err)
+		return &amqp.Channel{}, err
+	}
+
 	return ch, nil
 
 }

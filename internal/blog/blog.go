@@ -40,13 +40,13 @@ func (bs *BlogService) CreatePost(ctx context.Context, a Article) (Article, erro
 	article, err := bs.Store.CreatePost(ctx, a)
 	if err != nil {
 		log.Error("could not create article")
+	} else {
+		errCh := make(chan error)
+		go func(chan error) {
+			e := a.Publish(bs.Publisher)
+			<-e
+		}(errCh)
 	}
-
-	errCh := make(chan error)
-	go func(chan error) {
-		e := a.Publish(bs.Publisher)
-		<-e
-	}(errCh)
 
 	return article, err
 }
