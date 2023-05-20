@@ -1,6 +1,8 @@
 # Go Rest micro-service
 
 ---
+[![Go Report Card](https://goreportcard.com/badge/github.com/by-sabbir/go-12factor-scaffold)](https://goreportcard.com/report/github.com/by-sabbir/go-12factor-scaffold)
+
 Using 12Factor Methodology
 
 ## Instructions and Usage
@@ -11,8 +13,17 @@ Using 12Factor Methodology
 |**Migrate**| `make migrate`|
 |**Deploy** | `make run`    |
 
+## Benchmard (write only)
 
-###Help Text
+```bash
+PASS
+ok   github.com/by-sabbir/go-12factor-scaffold/transport/http 8.490s
+
+```
+
+![by-sabbir/go-12factor-scaffold benchmark](./_example/benchtest.png)
+
+### Help Text
 
 ```bash
 Available Commands:
