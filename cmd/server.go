@@ -20,7 +20,7 @@ var serverCmd = &cobra.Command{
 
 	Run: func(cmd *cobra.Command, args []string) {
 
-		if err := Run(); err != nil {
+		if err := run(); err != nil {
 			log.Println("[error] could not run server: ", err)
 			os.Exit(1)
 		}
@@ -31,7 +31,7 @@ func init() {
 	rootCmd.AddCommand(serverCmd)
 }
 
-func Run() error {
+func run() error {
 	db, err := db.NewDatabase()
 	if err != nil {
 		log.Error("cloud not connect to db: ", err)
