@@ -3,7 +3,7 @@ module github.com/by-sabbir/go-12factor-scaffold
 go 1.20
 
 require (
-	github.com/gin-gonic/gin v1.9.0
+	github.com/gin-gonic/gin v1.9.1
 	github.com/golang-migrate/migrate/v4 v4.15.2
 	github.com/google/uuid v1.3.0
 	github.com/gosimple/slug v1.13.1
@@ -17,7 +17,7 @@ require (
 )
 
 require (
-	github.com/bytedance/sonic v1.9.0 // indirect
+	github.com/bytedance/sonic v1.9.1 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20221115062448-fe3a3abad311 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
